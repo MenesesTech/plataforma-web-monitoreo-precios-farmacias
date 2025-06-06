@@ -13,7 +13,7 @@ def configurar_driver():
     options = Options()
     options.add_argument("--window-size=1920x1080")
     options.add_argument("--disable-notifications")
-    # options.add_argument("--headless")
+    options.add_argument("--headless")
     driver = webdriver.Chrome(service=service, options=options)
     return driver
 
@@ -25,7 +25,7 @@ def cargar_pagina(driver, url):
 
 # Función para guardar los datos en un archivo CSV
 def guardar_datos_csv(datos, nombre_archivo):
-    directorio = "/Users/ASUS/Downloads"
+    directorio = "./csv"
     ruta_completa = f"{directorio}/{nombre_archivo}"
     datos.to_csv(ruta_completa, index=False, sep=";", encoding="utf-8-sig")
     print(f"Datos guardados en: {ruta_completa}")
