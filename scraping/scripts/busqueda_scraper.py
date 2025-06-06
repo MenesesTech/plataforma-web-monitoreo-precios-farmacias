@@ -5,24 +5,24 @@ def main():
         {
             "nombre_tienda": "InkaFarma",
             "categoria": "Congestion Nasal",
-            "url": "https://inkafarma.pe/categoria/farmacia/resfriado-comun/congestion-nasal",
+            "url": "https://inkafarma.pe/categoria/salud/sistema-respiratorio",
             "div_product_card": "product",
             "span_product_name": "product-name",
             "span_product_price": "card-monedero",
             "div_target_price": "grid-price",
             "max_scroll_intentos": 10,
-            "nombre_archivo": "inkafarma_productos_resfriado.csv"
+            "nombre_archivo": "inkafarma_respiratorios.csv"
         },
         {
             "nombre_tienda": "MiFarma",
             "categoria": "Congestion Nasal",
-            "url": "https://www.mifarma.com.pe/categoria/farmacia-1/resfriado-comun-1/congestion-nasal-2",
+            "url": "https://www.mifarma.com.pe/categoria/salud-1/problemas-respiratorios",
             "div_product_card": "product",
             "span_product_name": "product-name",
             "span_product_price": "label",
             "div_target_price": "row",
             "max_scroll_intentos": 10,
-            "nombre_archivo": "mifarma_productos_resfriado.csv"
+            "nombre_archivo": "mifarma_respiratorios.csv"
         }
     ]
 
