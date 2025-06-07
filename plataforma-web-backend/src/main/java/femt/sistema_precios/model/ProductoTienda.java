@@ -24,15 +24,15 @@ public class ProductoTienda {
     @JoinColumn(name = "tienda_id", nullable = false)
     private Tienda tienda;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double precio_normal;
-
+    @Column(nullable = true)
     private Double precio_tarjeta;
+    @Column(nullable = true)
     private Double precio_aplicativo_movil;
 
     @Column(nullable = false)
     private String url_producto;
 
     private String url_imagen;
-    private Boolean disponible = true;
 }
