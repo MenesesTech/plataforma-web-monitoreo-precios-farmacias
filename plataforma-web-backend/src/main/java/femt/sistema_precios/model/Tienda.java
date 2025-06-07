@@ -23,7 +23,6 @@ public class Tienda {
 
     private String url_base;
     private String logo_url;
-    private Boolean activa = true;
 
     @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL)
     private List<ProductoTienda> productos = new ArrayList<>();

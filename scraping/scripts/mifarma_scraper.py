@@ -32,7 +32,7 @@ async def iniciar_scraping():
     async with async_playwright() as p:
         # Lanzar navegador
         browser = await p.chromium.launch(
-            headless=False,
+            headless=True,
             args=[
                 '--disable-blink-features=AutomationControlled',
                 '--disable-web-security',
