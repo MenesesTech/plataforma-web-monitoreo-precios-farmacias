@@ -7,25 +7,44 @@ from playwright.async_api import async_playwright
 URL = "https://www.mifarma.com.pe/categoria/salud-1/problemas-respiratorios"
 nombre_tienda = "Mifarma"
 
-# Función para hacer scroll dinámico
-async def scrollear_abajo(page, max_scroll_intentos):
-    ultima_altura = await page.evaluate("document.body.scrollHeight")
+# ========== MÉTODO 1: SCROLL PROGRESIVO (MÁS NATURAL) ==========
+async def scroll_progresivo(page, max_intentos=60, pixels_por_scroll=800):
+    """
+    Scroll más natural que simula comportamiento humano.
+    Hace scroll progresivo en lugar de saltar directamente al final.
+    """
+    print("🔄 Iniciando scroll progresivo...")
     
-    for intento in range(max_scroll_intentos):
-        # Scroll hacia abajo
-        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        # Esperar 4 segundos
-        await page.wait_for_timeout(4000)
-        # Obtener nueva altura
-        nueva_altura = await page.evaluate("document.body.scrollHeight")
+    # Subir al principio una sola vez
+    await page.evaluate("window.scrollTo(0, 0)")
+    await page.wait_for_timeout(1000)
+    
+    altura_anterior = 0
+    intentos_sin_cambio = 0
+    
+    for intento in range(max_intentos):
+        # Scroll progresivo hacia abajo
+        await page.evaluate(f"window.scrollBy(0, {pixels_por_scroll})")
         
-        print(f"Scroll {intento + 1}/{max_scroll_intentos} - Altura: {ultima_altura} -> {nueva_altura}")
+        # Esperar a que cargue contenido nuevo
+        await page.wait_for_timeout(2000)
         
-        if nueva_altura == ultima_altura:
-            print(f"No hay más contenido que cargar. Terminado en intento {intento + 1}")
-            break
+        # Verificar si cambió la altura
+        altura_actual = await page.evaluate("document.body.scrollHeight")
         
-        ultima_altura = nueva_altura
+        if altura_actual == altura_anterior:
+            intentos_sin_cambio += 1
+            print(f"📊 Sin cambios en altura ({intentos_sin_cambio}/3)")
+            
+            if intentos_sin_cambio >= 3:
+                print("✅ Scroll completado - No hay más contenido")
+                break
+        else:
+            intentos_sin_cambio = 0
+            altura_anterior = altura_actual
+            print(f"📈 Nueva altura detectada: {altura_actual}px")
+    
+    return altura_actual
 
 # Función principal
 async def iniciar_scraping():
@@ -43,7 +62,8 @@ async def iniciar_scraping():
         # Crear contexto con configuración personalizada
         context = await browser.new_context(
             viewport={'width': 1920, 'height': 1080},
-            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            permissions=[],
         )
 
         page = await context.new_page()
@@ -52,7 +72,7 @@ async def iniciar_scraping():
             print(f"🌐 Cargando página: {URL}")
             await page.goto(URL, wait_until="domcontentloaded")
             await page.wait_for_timeout(5000)
-            await scrollear_abajo(page, 10)
+            await scroll_progresivo(page)
             html = await page.content()
             print(f"✅ Página completa guardada en HTML de {nombre_tienda}")
         except Exception as e:
@@ -78,6 +98,11 @@ async def iniciar_scraping():
                 imagen_url = None
                 url_details = None
                 categoria = None
+
+                #Etiqueta del producto
+                etiqueta_tag = item.find('span', class_='text-tag')
+                etiqueta = etiqueta_tag.text.strip() if etiqueta_tag else None
+
                 # Nombre del producto
                 nombre_tag = item.find('span', class_='product-name')
                 nombre = nombre_tag.text.strip() if nombre_tag else None
@@ -128,7 +153,7 @@ async def iniciar_scraping():
                 if nombre and nombre not in seen and imagen_url != "../../../../../assets/images/product/not-found.svg":
                     seen.add(nombre)
                     productos.append({
-                        "nombre": nombre,
+                        "nombre": nombre + ' ' + etiqueta,
                         "precio_normal": precio_normal,
                         "precio_app": precio_app,
                         "precio_tarjeta": precio_tarjeta,
@@ -139,12 +164,4 @@ async def iniciar_scraping():
                         "tienda": 'mifarma'
                     })
 
-                 # Guardar en CSV
-                df = pd.DataFrame(productos)
-                df.to_csv('./csv/productos_mifarma.csv', index=False, encoding='utf-8')
-                print(f"✅ Datos guardados en productos_mifarma.csv con pandas")
-
-
-# Punto de entrada
-if __name__ == "__main__":
-    asyncio.run(iniciar_scraping())
+            return productos
