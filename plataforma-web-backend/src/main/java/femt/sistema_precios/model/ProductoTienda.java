@@ -25,14 +25,11 @@ public class ProductoTienda {
     private Tienda tienda;
 
     @Column(nullable = true)
-    private Double precio_normal;
-    @Column(nullable = true)
-    private Double precio_tarjeta;
-    @Column(nullable = true)
-    private Double precio_aplicativo_movil;
+    private Double precio;
 
-    @Column(nullable = false)
-    private String url_producto;
+    @Column(nullable = true)
+    private String url_detalle;
 
+    @Column(nullable = true)
     private String url_imagen;
 }
