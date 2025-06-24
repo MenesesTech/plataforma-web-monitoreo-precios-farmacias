@@ -1,0 +1,6 @@
+flask
+pandas
+beautifulsoup4
+playwright
+rapidfuzz
+requests
