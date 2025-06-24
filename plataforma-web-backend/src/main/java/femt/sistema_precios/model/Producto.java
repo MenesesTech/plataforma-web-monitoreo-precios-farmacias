@@ -22,10 +22,6 @@ public class Producto {
     @Column(nullable = false)
     private String nombre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoria;
-
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<ProductoTienda> tiendas = new ArrayList<>();
 
