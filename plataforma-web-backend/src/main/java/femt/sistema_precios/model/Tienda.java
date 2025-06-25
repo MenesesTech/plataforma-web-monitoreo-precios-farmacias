@@ -20,9 +20,7 @@ public class Tienda {
 
     @Column(nullable = false, unique = true)
     private String nombre;
-
     private String url_base;
-    private String logo_url;
 
     @OneToMany(mappedBy = "tienda", cascade = CascadeType.ALL)
     private List<ProductoTienda> productos = new ArrayList<>();
