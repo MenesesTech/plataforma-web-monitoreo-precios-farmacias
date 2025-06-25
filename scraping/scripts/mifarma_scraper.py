@@ -26,7 +26,7 @@ async def scroll_progresivo(page, max_intentos=60, pixels_por_scroll=800):
             print(f"📊 Sin cambios en altura ({intentos_sin_cambio}/3)")
 
             if intentos_sin_cambio >= 3:
-                print("✅ Scroll completado - No hay más contenido")
+                print("Scroll completado - No hay más contenido")
                 break
         else:
             intentos_sin_cambio = 0
@@ -62,9 +62,9 @@ async def iniciar_scraping(URL: str, nombre_tienda: str):
             await scroll_progresivo(page)
             await page.wait_for_timeout(1000)  # Wait after scrolling
             html = await page.content()
-            print(f"✅ Página completa guardada en HTML de {nombre_tienda}")
+            print(f"Página completa guardada en HTML de {nombre_tienda}")
         except Exception as e:
-            print(f"❌ Error al cargar la página de {nombre_tienda}: {e}")
+            print(f"Error al cargar la página de {nombre_tienda}: {e}")
             html = ""
         finally:
             await browser.close()
@@ -111,7 +111,7 @@ async def iniciar_scraping(URL: str, nombre_tienda: str):
                         if imagen_url and "not-found.svg" in imagen_url:
                             imagen_url = None
                     if not imagen_url:
-                        print(f"⚠️ No se encontró imagen para {nombre} en {nombre_tienda}")
+                        print(f"No se encontró imagen para {nombre} en {nombre_tienda}")
 
                 # Url de detalles del producto
                 detail_product_content = item.find("a", class_="link")
