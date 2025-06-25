@@ -4,27 +4,24 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "productos")
+@Table(name = "producto")
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(nullable = false)
     private String nombre;
+    private String imagenUrl;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    private List<ProductoTienda> tiendas = new ArrayList<>();
+    private List<DetalleUrl> detalleUrls;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    private List<PrecioHistorico> precios;
 }
