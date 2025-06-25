@@ -64,7 +64,7 @@ async def iniciar_scraping(url: str, nombre_tienda: str):
             html = await page.content()
             print(f"✅ Página completa guardada en HTML de {nombre_tienda}")
         except Exception as e:
-            print(f"❌ Error al cargar la página de {nombre_tienda}: {e}")
+            print(f"Error al cargar la página de {nombre_tienda}: {e}")
             html = ""
         finally:
             await browser.close()
