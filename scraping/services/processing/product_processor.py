@@ -74,8 +74,4 @@ class DataProcessor:
             if producto["precio"]:
                 productos_procesados.append(producto)
 
-        return {
-            "datos": productos_procesados,
-            "mensaje": "Scraping ejecutado con éxito",
-            "total_registros": len(productos_procesados)
-        }
+        return productos_procesados
