@@ -2,6 +2,7 @@ package femt.sistema_precios.service;
 
 import java.util.List;
 
+import femt.sistema_precios.dto.ProductoCardKeywordDTO;
 import femt.sistema_precios.dto.ProductoRequestDTO;
 
 public interface ProductoScrapingService {
@@ -12,4 +13,7 @@ public interface ProductoScrapingService {
     void actualizarProducto(ProductoRequestDTO precioHistoricoDTO);
 
     List<ProductoRequestDTO> solicitudProductosFlask() throws Exception;
+
+    List<ProductoCardKeywordDTO> buscarPorKeyword(String keywords) throws Exception;
+
 }
