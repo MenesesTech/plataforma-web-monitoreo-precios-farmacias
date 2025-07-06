@@ -1,5 +1,6 @@
 package femt.sistema_precios.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import femt.sistema_precios.dto.ProductoCardDTO;
 import femt.sistema_precios.dto.ProductoCardKeywordDTO;
 import femt.sistema_precios.dto.ProductoPrecioDTO;
+import femt.sistema_precios.dto.ProductoPrecioUnificadoDTO;
 import femt.sistema_precios.dto.ProductoRequestDTO;
 import femt.sistema_precios.service.ProductoScrapingService;
 import femt.sistema_precios.service.ProductoService;
@@ -73,14 +75,40 @@ public class ProductoScrapingController {
         }
     }
 
-    @GetMapping("/{id}/precios")
+    @GetMapping("/precios/{id}")
     public ResponseEntity<?> obtenerPrecios(@PathVariable Long id) {
         try {
-            List<ProductoPrecioDTO> productosConPrecios = productoService.listarProductosPorId(id.intValue());
-            return ResponseEntity.ok(productosConPrecios);
+            List<ProductoPrecioDTO> productos = productoService.listarProductosPorId(id.intValue());
+
+            if (productos.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+            }
+
+            ProductoPrecioUnificadoDTO resultado = new ProductoPrecioUnificadoDTO();
+
+            List<Double> precios = new ArrayList<>();
+            List<String> tiendas = new ArrayList<>();
+            List<String> urls = new ArrayList<>();
+            List<String> urls_base = new ArrayList<>();
+            for (ProductoPrecioDTO producto : productos) {
+                precios.add(producto.getPrecio());
+                tiendas.add(producto.getTienda());
+                urls.add(producto.getUrl());
+                urls_base.add(producto.getUrl_base());
+                resultado.setImagenUrl(producto.getImagenUrl());
+                resultado.setNombre(producto.getNombre());
+            }
+            resultado.setUrl_base(urls_base);
+            resultado.setPrecio(precios);
+            resultado.setTienda(tiendas);
+            resultado.setUrl(urls);
+
+            return ResponseEntity.ok(resultado);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al obtener precios: " + e.getMessage());
         }
     }
+
 }
