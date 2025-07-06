@@ -12,4 +12,6 @@ public interface ProductoPrecioDTO {
     Double getPrecio();
 
     String getTienda();
+
+    String getUrl_base();
 }

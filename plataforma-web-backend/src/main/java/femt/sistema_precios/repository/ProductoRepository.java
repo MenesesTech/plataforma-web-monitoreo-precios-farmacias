@@ -20,7 +20,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
                 MIN(p.nombre) AS nombre,
                 MIN(purl.url) AS url,
                 ph.precio AS precio,
-                MIN(t.nombre) AS tienda
+                MIN(t.nombre) AS tienda,
+                MIN(t.url_base) AS url_base
             FROM producto p
             INNER JOIN detalle_url purl ON p.id = purl.producto_id
             INNER JOIN precio_historico ph ON ph.producto_id = p.id
