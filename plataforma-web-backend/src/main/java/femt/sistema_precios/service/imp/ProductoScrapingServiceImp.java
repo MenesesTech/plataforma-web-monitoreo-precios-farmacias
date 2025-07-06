@@ -131,18 +131,21 @@ public class ProductoScrapingServiceImp implements ProductoScrapingService {
     public List<ProductoCardKeywordDTO> buscarPorKeyword(String keywords) throws Exception {
         try {
             String url = scraperApiConfig.getUrl2();
-            String keyword = URLEncoder.encode(keywords, StandardCharsets.UTF_8);
-            String fullUrl = url + keyword;
+            String fullUrl = url + keywords;
+
             ResponseEntity<ProductoCardKeywordDTO[]> response = restTemplate.postForEntity(
                     fullUrl, null,
                     ProductoCardKeywordDTO[].class);
+
             if (response.getBody() == null) {
-                throw new IllegalStateException("No se rebieron productos de Flask");
+                throw new IllegalStateException("No se recibieron productos de Flask");
             }
-            List<ProductoCardKeywordDTO> productos = Arrays.asList(response.getBody());
-            return productos;
+
+            return Arrays.asList(response.getBody());
+
         } catch (Exception e) {
             throw new Exception("Error al comunicarse con el servicio Flask: " + e.getMessage());
         }
     }
+
 }
