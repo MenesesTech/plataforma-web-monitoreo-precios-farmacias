@@ -11,5 +11,6 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "scraper.api")
 @Validated
 public class ScraperApiConfig {
-    private String url;
+    private String url1;
+    private String url2;
 }

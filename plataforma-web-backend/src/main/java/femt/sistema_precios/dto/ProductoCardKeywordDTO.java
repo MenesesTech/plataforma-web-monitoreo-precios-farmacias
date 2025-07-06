@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TiendaDTO {
-    private Long id;
+public class ProductoCardKeywordDTO {
     private String nombre;
-    private String urlBase;
-    private List<PrecioHistoricoDTO> precios;
+    private String imagen_url;
+    private List<String> precio;
+    private List<String> tienda;
+    private List<String> detalle_url;
+    private List<String> url_base;
+
 }

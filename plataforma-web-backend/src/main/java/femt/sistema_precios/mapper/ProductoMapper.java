@@ -3,26 +3,18 @@ package femt.sistema_precios.mapper;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import femt.sistema_precios.dto.ProductoCardDTO;
-import femt.sistema_precios.dto.ProductoDTO;
 import femt.sistema_precios.model.PrecioHistorico;
 import femt.sistema_precios.model.Producto;
+import femt.sistema_precios.model.Tienda;
 
 @Component
 public class ProductoMapper {
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    public Producto toEntity(ProductoDTO dto) {
-        Producto producto = modelMapper.map(dto, Producto.class);
-        return producto;
-    }
 
     public ProductoCardDTO toCardDTO(Producto producto) {
         ProductoCardDTO dto = new ProductoCardDTO();
@@ -35,8 +27,17 @@ public class ProductoMapper {
 
         if (mejorPrecio.isPresent()) {
             PrecioHistorico precio = mejorPrecio.get();
+            Tienda tienda = precio.getTienda();
             dto.setMejorPrecio(precio.getPrecio());
-            dto.setTiendaNombre(precio.getTienda().getNombre());
+
+            // ✅ Contar tiendas únicas correctamente
+            Set<String> tiendasUnicas = producto.getPrecios().stream()
+                    .map(ph -> ph.getTienda().getNombre())
+                    .collect(Collectors.toSet());
+            dto.setCantidadTienda(tiendasUnicas.size());
+
+            dto.setTiendaNombre(tienda.getNombre());
+            dto.setBase(tienda.getUrlBase());
 
             String url = producto.getDetalleUrls() != null && !producto.getDetalleUrls().isEmpty()
                     ? producto.getDetalleUrls().get(0).getUrl()
@@ -46,7 +47,10 @@ public class ProductoMapper {
             dto.setMejorPrecio(BigDecimal.ZERO);
             dto.setTiendaNombre("Sin información");
             dto.setUrlProducto("");
+            dto.setCantidadTienda(0); // También puedes poner null si prefieres
         }
+
         return dto;
     }
+
 }

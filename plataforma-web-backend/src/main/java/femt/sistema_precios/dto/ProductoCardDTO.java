@@ -15,4 +15,6 @@ public class ProductoCardDTO {
     private BigDecimal mejorPrecio;
     private String urlProducto;
     private String tiendaNombre;
+    private String base;
+    private Integer cantidadTienda;
 }
