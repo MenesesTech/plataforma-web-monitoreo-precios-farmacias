@@ -71,6 +71,15 @@ def send_data():
         logger.error(f"Error al ejecutar el scraping: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route("/api/scraping/<keywords>", methods=["POST"])
+def send_data_for_keyword(keywords):
+    try:
+        productos = asyncio.run(ejecutar_scraping_por_palabra_clave(keywords))
+        return jsonify(productos), 200
+    except Exception as e:
+        logger.error(f"Error al ejecutar el scraping: {e}")
+        return jsonify({"error": str(e)}), 500
+
 # ==============================
 #       MANEJO DE EXCEPCIONES
 # ==============================
