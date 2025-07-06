@@ -2,13 +2,28 @@ import asyncio
 from urllib.parse import quote
 from playwright.async_api import async_playwright
 from services.normalization.product_normalizer import ProductNormalizer
+import re
+
+def limpiar_y_codificar_keyword(keyword: str) -> str:
+    """
+    Limpia la keyword eliminando caracteres innecesarios 
+    y la codifica para URL (espacios → %20)
+    """
+    # Limpieza básica
+    keyword = keyword.strip().lower()
+    keyword = re.sub(r"[^\w\s]", "", keyword)  # solo letras, números y espacios
+    keyword = re.sub(r"\s+", " ", keyword)     # un solo espacio entre palabras
+    
+    # Codificación URL (espacios -> %20)
+    keyword_encoded = quote(keyword, safe="")
+    return keyword_encoded
 
 async def search_mifarma_playwright(keyword: str):
     productos = []
     seen = set()
     nombre_tienda = "Mifarma"
     
-    keyword_encoded = quote(keyword.strip().lower())
+    keyword_encoded = limpiar_y_codificar_keyword(keyword)
     url = f"https://mifarma.com.pe/buscador?keyword={keyword_encoded}"
     
     async with async_playwright() as p:

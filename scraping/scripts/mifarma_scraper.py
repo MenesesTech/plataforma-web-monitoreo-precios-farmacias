@@ -3,7 +3,7 @@ from playwright.async_api import async_playwright
 from services.normalization.product_normalizer import ProductNormalizer
 
 # ========== MÉTODO 1: SCROLL PROGRESIVO ==========
-async def scroll_progresivo(page, max_intentos=60, pixels_por_scroll=800):
+async def scroll_progresivo(page, max_intentos=100, pixels_por_scroll=800):
     # Subir al principio una sola vez
     await page.evaluate("window.scrollTo(0, 0)")
     await page.wait_for_timeout(500)
@@ -16,7 +16,7 @@ async def scroll_progresivo(page, max_intentos=60, pixels_por_scroll=800):
         await page.evaluate(f"window.scrollBy(0, {pixels_por_scroll})")
 
         # Esperar a que cargue contenido nuevo
-        await page.wait_for_timeout(500)
+        await page.wait_for_timeout(15000)
 
         # Verificar si cambió la altura
         altura_actual = await page.evaluate("document.body.scrollHeight")
@@ -25,7 +25,7 @@ async def scroll_progresivo(page, max_intentos=60, pixels_por_scroll=800):
             intentos_sin_cambio += 1
             print(f"📊 Sin cambios en altura ({intentos_sin_cambio}/3)")
 
-            if intentos_sin_cambio >= 3:
+            if intentos_sin_cambio >= 6:
                 print("Scroll completado - No hay más contenido")
                 break
         else:
@@ -57,8 +57,8 @@ async def iniciar_scraping(URL: str, nombre_tienda: str):
 
         try:
             print(f"🌐 Cargando página: {URL}")
-            await page.goto(URL, wait_until="domcontentloaded")
-            await page.wait_for_timeout(2000)  # Increased wait time
+            await page.goto(URL, wait_until="domcontentloaded", timeout=30000)
+            await page.wait_for_timeout(5000)  # Increased wait time
             await scroll_progresivo(page)
             await page.wait_for_timeout(1000)  # Wait after scrolling
             html = await page.content()
