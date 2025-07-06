@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.fade-bottom {
+  mask-image: linear-gradient(to top, transparent 70%, black 90%);
+  -webkit-mask-image: linear-gradient(to top, transparent 10%, black 80%);
+}
+
