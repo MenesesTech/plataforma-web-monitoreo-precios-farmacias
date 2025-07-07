@@ -7,7 +7,6 @@ const API_URL_PRODUCTOKEYWORD = "http://localhost:8080/api/productos/buscar"
 export const listarProductos = async () => {
     try {
         const response = await axios.get(API_URL_PRODUCTOSLISTA);
-        console.log("Respuesta del backend:", response.data);
         if (response.status === 200) {
             return response.data;
         }

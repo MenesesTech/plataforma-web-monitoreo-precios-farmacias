@@ -1,6 +1,6 @@
 // src/components/ProductList.jsx
 import React from "react";
-import { ProductCard } from "../product/ProductCard";
+import { ProductCard } from "../components/ProductCard";
 
 export const ProductList = ({ productos }) => {
   return (
