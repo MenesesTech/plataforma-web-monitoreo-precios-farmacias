@@ -5,10 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: "./",
   plugins: [react()],
-  // server: {
-  //   host: true, // importante para que acepte conexiones externas
-  //   allowedHosts: [
-  //     'andrews-vatican-intention-pounds.trycloudflare.com'
-  //   ]
-  // }
+  server: {
+    allowedHosts: [
+      'f6ef-38-253-147-163.ngrok-free.app'
+    ]
+  }
 })

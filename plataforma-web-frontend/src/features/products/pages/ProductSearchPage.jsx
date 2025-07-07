@@ -1,45 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Header } from "../../components/Header";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { Footer } from "../../components/Footer";
-import { buscarMedicamentosyListar } from "../product/services/ProductoService";
-import { Preloader } from "../../components/preloader/PreloaderPage";
+import { Header } from "../../../components/Header";
+import { Footer } from "../../../components/Footer";
+import { Preloader } from "../../../components/common/preloader/PreloaderPage";
+import { useProductSearch } from "../../products/hooks/useProductSearch";
 
 export const ProductSearch = () => {
   const { keyword } = useParams();
-  const [productos, setProductos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { productos, isLoading } = useProductSearch(keyword);
 
-  useEffect(() => {
-    const fetchProductos = async () => {
-      if (!keyword) return;
-      setIsLoading(true);
-      try {
-        if (!keyword) return;
-        const resultados = await buscarMedicamentosyListar(keyword);
-        console.log("Resultados del scraping:", resultados);
-        const productosFormateados = resultados.map((producto) => ({
-          id: producto.detalle_url[0].split("/").pop(),
-          nombre: producto.nombre,
-          imagenUrl: producto.imagen_url,
-          mejorPrecio: parseFloat(producto.precio[0].replace(",", ".")),
-          urlProducto: producto.detalle_url[0],
-          tiendaNombre: producto.tienda[0],
-          base: producto.url_base[0],
-          cantidadTienda: producto.tienda.length,
-        }));
-
-        setProductos(productosFormateados);
-      } catch (error) {
-        console.error("Error al cargar los productos:", error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProductos();
-  }, [keyword]);
   if (isLoading) return <Preloader />;
+
   return (
     <>
       <Header />
@@ -54,7 +25,7 @@ export const ProductSearch = () => {
                 key={producto.id}
                 className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 max-w-sm mx-auto h-full flex flex-col transition-all duration-300 transform hover:scale-105"
               >
-                {/* Corazón de favorito (decorativo) */}
+                {/* Favorito */}
                 <div className="flex justify-end mb-2">
                   <button className="text-gray-400 hover:text-red-500">
                     <svg
@@ -73,7 +44,7 @@ export const ProductSearch = () => {
                   </button>
                 </div>
 
-                {/* Imagen del producto */}
+                {/* Imagen */}
                 <div className="flex justify-center mb-4">
                   <img
                     src={producto.imagenUrl}
@@ -82,7 +53,7 @@ export const ProductSearch = () => {
                   />
                 </div>
 
-                {/* Información del producto */}
+                {/* Info */}
                 <div className="text-center space-y-2 flex-grow">
                   <h3 className="text-lg font-semibold text-gray-900 leading-tight min-h-[3.5rem] flex items-center justify-center">
                     {producto.nombre}

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const HeroSection = ({ onGoToOffers }) => {
+export const Banner = ({ onGoToOffers }) => {
   return (
     <>
       <section className="relative bg-gradient-to-br via-blue-50 to-teal-50 overflow-hidden">

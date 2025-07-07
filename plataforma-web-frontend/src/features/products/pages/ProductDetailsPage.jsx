@@ -1,161 +1,33 @@
-// Importación de hooks y componentes necesarios
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // Para obtener el ID desde la URL
 import { Heart, TrendingDown, Bell } from "lucide-react"; // Iconos de la interfaz
-import { Header } from "../../components/Header"; // Encabezado
-import { Footer } from "../../components/Footer"; // Pie de página
-import { listarPrecios } from "./services/ProductoService"; // Servicio para obtener los datos
-
+import { Header } from "../../../components/Header";
+import { Footer } from "../../../components/Footer";
+import { LoadingScreen } from "../../../components/common/LoadingScreen";
+import { EmptyProductScreen } from "../../../components/common/EmptyProductScreen";
+import { ErrorScreen } from "../../../components/common/ErrorScreen";
+import { useProductDetails } from "../hooks/useProductDetails";
+import { Preloader } from "../../../components/common/preloader/PreloaderPage";
 // Componente principal de detalle de producto
-export const ProductDetails = () => {
-  const { id } = useParams(); // Extrae el ID del producto desde la URL
-  const [producto, setProducto] = useState(null); // Estado para almacenar información del producto
-  const [tiendas, setTiendas] = useState([]); // Lista de tiendas con precios
-  const [precios, setPrecios] = useState({ min: 0, max: 0, promedio: 0 }); // Estadísticas de precios
-  const [isWishlisted, setIsWishlisted] = useState(false); // Estado para favoritos
-  const [loading, setLoading] = useState(true); // Indicador de carga
-  const [error, setError] = useState(null); // Estado de error
+export const ProductDetailsPage = () => {
+  const { producto, tiendas, precios, loading, error, descuentoPorcentaje } =
+    useProductDetails();
+  // 🧠 Hook de preloader al inicio (independiente del loading de datos)
+  const [showPreloader, setShowPreloader] = useState(true);
 
-  // Hook para obtener los datos cuando cambia el ID
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    const timer = setTimeout(() => {
+      setShowPreloader(false);
+    }, 1000); // Mostrar preloader solo 1 segundo
 
-        // Llamada al servicio
-        const data = await listarPrecios(id);
-        if (!data) throw new Error("Respuesta vacía del servidor");
+    return () => clearTimeout(timer); // Limpieza
+  }, []);
 
-        // Desestructuración de datos
-        const { imagenUrl, nombre, tienda, precio, url, url_base } = data;
-
-        // Procesamiento del nombre para obtener la marca (por simplicidad, primer palabra)
-        const productoProcesado = {
-          nombre,
-          imagenUrl,
-          marca: nombre.split(" ")[0],
-        };
-
-        // Diccionario para mostrar nombres de tiendas legibles
-        const mapeoTiendas = {
-          inkafarma: "Inkafarma",
-          mifarma: "Mifarma",
-          promart: "Promart",
-          ripley: "Ripley",
-          plazavea: "Plaza Vea",
-          falabella: "Falabella",
-          oechsle: "Oechsle",
-        };
-
-        // Procesamiento de tiendas y precios
-        const tiendasProcesadas = tienda.map((t, index) => ({
-          name: mapeoTiendas[t] || t,
-          tiendaId: t,
-          price: precio[index],
-          url: url[index],
-          url_base: url_base[index],
-        }));
-
-        // Ordenar por precio ascendente
-        tiendasProcesadas.sort((a, b) => a.price - b.price);
-        if (tiendasProcesadas.length > 0) {
-          tiendasProcesadas[0].best = true; // Etiqueta a la mejor tienda
-        }
-
-        // Cálculo de estadísticas
-        const preciosArray = tiendasProcesadas.map((t) => t.price);
-        const min = Math.min(...preciosArray);
-        const max = Math.max(...preciosArray);
-        const promedio =
-          preciosArray.reduce((sum, p) => sum + p, 0) / preciosArray.length;
-
-        // Actualización de estados
-        setProducto(productoProcesado);
-        setTiendas(tiendasProcesadas);
-        setPrecios({ min, max, promedio });
-      } catch (err) {
-        console.error("Error al obtener datos:", err.message);
-        setError("Error al cargar los datos del producto.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Ejecuta la función si existe un ID válido
-    if (id) {
-      fetchData();
-    }
-  }, [id]);
-
-  // Cálculo del porcentaje de descuento
-  const descuentoPorcentaje =
-    precios.max > 0
-      ? Math.round(((precios.max - precios.min) / precios.max) * 100)
-      : 0;
-
-  // Renderizado condicional si está cargando
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-theme">
-        <Header />
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-hero_dark mx-auto mb-4"></div>
-              <p className="text-gray-600">Cargando datos del producto...</p>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Renderizado si ocurre un error
-  if (error) {
-    return (
-      <div className="min-h-screen bg-theme">
-        <Header />
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <div className="text-red-500 mb-4">⚠️</div>
-              <p className="text-gray-600">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-hero_dark text-white rounded-lg hover:bg-hero_dark_black transition-colors"
-              >
-                Reintentar
-              </button>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Renderizado si no hay producto encontrado
-  if (!producto) {
-    return (
-      <div className="min-h-screen bg-theme">
-        <Header />
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="flex items-center justify-center min-h-[400px]">
-            <div className="text-center">
-              <p className="text-gray-600">
-                No se encontraron datos del producto
-              </p>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Render principal de la página
+  // 🎬 Mostrar preloader solo una vez al entrar a la página
+  if (showPreloader) return <Preloader />;
+  if (showPreloader) return <Preloader />;
+  if (error) return <ErrorScreen mensaje={error} />;
+  if (!producto.nombre) return <EmptyProductScreen />;
+  if (loading) return <Preloader />;
   return (
     <div className="min-h-screen bg-theme">
       <Header />
@@ -170,18 +42,6 @@ export const ProductDetails = () => {
                 <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">
                   {producto.marca}
                 </span>
-                <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`p-2 rounded-full transition-all ${
-                    isWishlisted
-                      ? "text-red-500 bg-red-50"
-                      : "text-gray-400 hover:text-red-500 hover:bg-red-50"
-                  }`}
-                >
-                  <Heart
-                    className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`}
-                  />
-                </button>
               </div>
 
               <h1 className="text-3xl font-bold text-hero_dark_black leading-tight">
