@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import femt.sistema_precios.dto.ProductoRequestDTO;
 import femt.sistema_precios.service.ProductoScrapingService;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
