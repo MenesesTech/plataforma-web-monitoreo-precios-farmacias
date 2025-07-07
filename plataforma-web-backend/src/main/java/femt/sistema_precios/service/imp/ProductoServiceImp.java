@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
 import femt.sistema_precios.dto.ProductoCardDTO;
 import femt.sistema_precios.dto.ProductoPrecioDTO;
 import femt.sistema_precios.mapper.ProductoMapper;
 import femt.sistema_precios.model.Producto;
 import femt.sistema_precios.repository.ProductoRepository;
 import femt.sistema_precios.service.ProductoService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductoServiceImp implements ProductoService {
@@ -23,6 +23,7 @@ public class ProductoServiceImp implements ProductoService {
         this.productoMapper = productoMapper;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductoCardDTO> listarProductosConMejorPrecio() throws Exception {
         try {
@@ -35,6 +36,7 @@ public class ProductoServiceImp implements ProductoService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductoPrecioDTO> listarProductosPorId(Integer id) throws Exception {
         try {
