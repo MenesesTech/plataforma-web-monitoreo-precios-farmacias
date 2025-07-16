@@ -47,9 +47,10 @@ El proyecto sigue una arquitectura de tres capas:
 
 ## 🖼️ Capturas de Pantalla
 
-![Captura 1](https://via.placeholder.com/600x400/0d6efd/FFFFFF?text=Pantalla+Principal)
-![Captura 2](https://via.placeholder.com/600x400/0d6efd/FFFFFF?text=Comparador+de+Precios)
-![Captura 3](https://via.placeholder.com/600x400/0d6efd/FFFFFF?text=Detalle+de+Producto)
+<img width="1909" height="1356" alt="platform_capture_farma (1)" src="https://github.com/user-attachments/assets/3c78eb65-06ad-4db0-833f-a8a8480d1db4" />
+<img width="1920" height="1976" alt="platform_capture_farma_comparador" src="https://github.com/user-attachments/assets/8ccaed62-5f74-42b6-9865-7907ca297205" />
+<img width="1513" height="330" alt="image" src="https://github.com/user-attachments/assets/8ab1ab8e-f593-41ee-ba28-64e1d08a53c4" />
+<img width="1920" height="1683" alt="screencapture-localhost-5173-buscar-producto-panadol-2025-07-16-17_45_58" src="https://github.com/user-attachments/assets/93d2edd0-907f-4a41-81a8-499d5042ba46" />
 
 ## ⚙️ Instalación y Ejecución
 
@@ -128,14 +129,5 @@ python -m unittest tests.integration_test
 - Integración de múltiples tecnologías
 - Arquitectura de software
 
-## 📝 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
-## 👤 Autor
-
-[Tu Nombre](https://linkedin.com/in/tu-perfil) - Desarrollador Full-Stack
-
----
 
 ⭐️ Si te gusta este proyecto, ¡no dudes en darle una estrella!
