@@ -34,6 +34,7 @@ export const buscarMedicamentosyListar = async (keywords) => {
     try {
         const response = await axios.post(`${API_URL_PRODUCTOKEYWORD}/${keywords}`);
         if (response.status === 200) {
+            console.log(response.data)
             return response.data;
         }
         throw new Error("Error al traer los productos con keywords de la API");
