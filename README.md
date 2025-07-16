@@ -1,6 +1,5 @@
 # Plataforma Web de Monitoreo de Precios de Farmacias
-
-![Banner del Proyecto](https://via.placeholder.com/1200x300/0d6efd/FFFFFF?text=Monitoreo+de+Precios+de+Farmacias)
+<img width="1919" height="985" alt="platform_capture_farma_banner" src="https://github.com/user-attachments/assets/7f403162-5516-47b4-8dd7-458a8fb751b9" />
 
 ## 📋 Descripción
 
