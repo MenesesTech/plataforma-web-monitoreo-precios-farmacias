@@ -3,24 +3,25 @@
 
 ## 📋 Descripción
 
-Plataforma web full-stack que permite a los usuarios comparar precios de medicamentos entre diferentes farmacias en tiempo real. El sistema recopila datos mediante web scraping, los procesa y presenta de manera intuitiva, permitiendo a los usuarios encontrar las mejores ofertas para sus medicamentos.
+Plataforma web Full-Stack que permite a los usuarios comparar precios de medicamentos en tiempo real entre diferentes farmacias peruanas. El sistema realiza web scraping automatizado, procesa la información y la presenta de forma accesible para que los usuarios encuentren los precios más convenientes.
 
 ## 🚀 Características Principales
 
-- **Búsqueda de medicamentos** por nombre o palabras clave
-- **Comparación de precios** entre diferentes farmacias
-- **Visualización de datos** clara y accesible
-- **Sistema de autenticación** seguro con JWT
-- **Web scraping automatizado** para mantener datos actualizados
+- 🔍 **Búsqueda de medicamentos** por nombre o palabra clave  
+- 💲 **Comparación de precios** entre múltiples farmacias  
+- 📈 **Visualización clara** de precios mínimo/máximo y enlaces directos  
+- 🔐 **Sistema de autenticación segura** con JWT  
+- 🤖 **Scraping automatizado y procesamiento inteligente** de productos  
+- 🧠 **Agrupamiento por similitud** textual y semántica  
 
 ## 🛠️ Tecnologías Utilizadas
 
-### Frontend
-- **React 19** - Framework de JavaScript para UI
-- **Vite** - Herramienta de construcción rápida
-- **Tailwind CSS** - Framework CSS utilitario
-- **Axios** - Cliente HTTP para peticiones a la API
-- **React Router** - Enrutamiento del lado del cliente
+### 🔧 Frontend
+- **React 19** – Biblioteca moderna para UI  
+- **Vite** – Empaquetador ultrarrápido  
+- **Tailwind CSS** – Estilos utilitarios rápidos  
+- **Axios** – Cliente HTTP para comunicación con backend  
+- **React Router** – Navegación de una sola página 
 
 ### Backend
 - **Spring Boot 3.5** - Framework Java para aplicaciones web
@@ -80,44 +81,6 @@ pip install -r requirements.txt
 python app.py
 ```
 
-## 🧪 Pruebas
-
-El proyecto incluye pruebas unitarias y de integración para garantizar la calidad del código:
-
-### Backend (Spring Boot)
-
-```bash
-# Ejecutar todas las pruebas
-cd plataforma-web-backend
-./mvnw test
-
-# Ejecutar solo pruebas de integración
-./mvnw test -Dtest=*IntegrationTest
-```
-
-### Frontend (React)
-
-```bash
-# Ejecutar todas las pruebas
-cd plataforma-web-frontend
-npm run test
-
-# Ejecutar pruebas en modo watch
-npm run test:watch
-
-# Generar informe de cobertura
-npm run test:coverage
-```
-
-### Módulo de Scraping (Python)
-
-```bash
-cd scraping
-python -m unittest discover tests
-
-# Ejecutar prueba específica
-python -m unittest tests.integration_test
-```
 
 ## 🌟 Habilidades Demostradas
 
